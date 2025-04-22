@@ -13,10 +13,21 @@ import LikeBtn from "../../Components/LikeBtn";
 
 export const getStaticPaths = () => {
   const allBlogs = getAllBlogPosts();
+
+  // Sanitize the blog titles to remove invalid characters like ":"
+  const sanitizeSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9- ]/g, '')  // Remove invalid characters
+      .replace(/\s+/g, '-')  // Convert spaces to hyphens
+      .replace(/-+/g, '-')  // Replace multiple hyphens with a single one
+      .trim();
+  };
+
   return {
     paths: allBlogs.map((blog) => ({
       params: {
-        id: String(blog.data.Title.split(" ").join("-").toLowerCase()),
+        id: sanitizeSlug(blog.data.Title),  // Apply the sanitizeSlug function
       },
     })),
     fallback: false,
@@ -28,10 +39,23 @@ export const getStaticProps = async (context) => {
   const allBlogs = getAllBlogPosts();
   const allTopics = getAllTopics();
 
-  const page = allBlogs.find(
-    (blog) =>
-      String(blog.data.Title.split(" ").join("-").toLowerCase()) === params.id
-  );
+  // Sanitize function for comparison (reuse from getStaticPaths)
+  const sanitizeSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9- ]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
+  console.log('Requested ID:', params.id);
+
+  const page = allBlogs.find((blog) => {
+    const slug = sanitizeSlug(blog.data.Title);
+    console.log('Sanitized Slug:', slug); // Logging each slug being compared
+    return slug === params.id;
+  });
 
   const { data, content } = page;
   const mdxSource = await serialize(content, {
@@ -51,6 +75,7 @@ export const getStaticProps = async (context) => {
     },
   };
 };
+
 
 function id({ data, content, id, headings, topics }) {
   return (

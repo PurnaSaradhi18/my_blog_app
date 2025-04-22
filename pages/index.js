@@ -28,7 +28,7 @@ export default function Home({ blogs, topics }) {
         />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://blogs.soumya-jit.tech/" />
+        <meta property="og:url" content="https://my-blog-app-puce.vercel.app/" />
         <meta property="og:title" content="Bits-0f-C0de 🚀" />
         <meta
           property="og:description"
@@ -40,7 +40,7 @@ export default function Home({ blogs, topics }) {
         />
 
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://blogs.soumya-jit.tech/" />
+        <meta property="twitter:url" content="https://github.com/PurnaSaradhi18/my_blog_app" />
         <meta property="twitter:title" content="Bits-0f-C0de 🚀" />
         <meta
           property="twitter:description"
